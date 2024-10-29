@@ -20,8 +20,17 @@ export default function LatestEntries(): JSX.Element {
   const [userVerifiedSms, setUserVerifiedSms] = useState(false)
 
   useEffect(() => {
-    const userVerified = sessionStorage.getItem("user.verificadoSms") === "true"
-    setUserVerifiedSms(userVerified)
+    const userVerified = sessionStorage.getItem("user")
+    if (userVerified) {
+      try {
+        const user = JSON.parse(userVerified)
+        setUserVerifiedSms(user.verificadoSms === true)
+      } catch (error) {
+        setUserVerifiedSms(false)
+      }
+    } else {
+      setUserVerifiedSms(false)
+    }
   }, [])
 
   useEffect(() => {

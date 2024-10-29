@@ -15,9 +15,10 @@ export const useLogin = () => {
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
-      const token: string = await autenticarUsuario(email, password)
+      const token = await autenticarUsuario(email, password)
       sessionStorage.setItem("token", token)
       const userData = await getProfile()
+      sessionStorage.setItem("user", JSON.stringify(userData))
       userStore.getState().setUser(userData)
       navigate("/")
     } catch (error: any) {
