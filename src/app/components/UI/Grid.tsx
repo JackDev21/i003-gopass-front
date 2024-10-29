@@ -30,10 +30,18 @@ export default function Grid({ viewType }: GridProps) {
   const [userVerifiedSms, setUserVerifiedSms] = useState(false)
 
   useEffect(() => {
-    const userVerified = sessionStorage.getItem("user.verificadoSms") === "true"
-    setUserVerifiedSms(userVerified)
+    const userVerified = sessionStorage.getItem("user")
+    if (userVerified) {
+      try {
+        const user = JSON.parse(userVerified)
+        setUserVerifiedSms(user.verificadoSms === true)
+      } catch (error) {
+        setUserVerifiedSms(false)
+      }
+    } else {
+      setUserVerifiedSms(false)
+    }
   }, [])
-
   const [filteredTickets, setFilteredTickets] = useState<Ticket[]>([])
   const [searchQuery, setSearchQuery] = useState("")
 
