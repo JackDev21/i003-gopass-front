@@ -1,16 +1,12 @@
 import { SystemError } from "com/errors"
-// import { useDispatch } from "react-redux"
 
 import useContext from "../context/UseContext"
 import { verifyTicket } from "../service/verifyTicket"
-// import { setEntry } from "../store/entry/entrySlice"
 
 import { ticketStore } from "../store_zustand/tickets"
 
 export const userVerifyTicket = () => {
   const { alert } = useContext()
-
-  // const dispatch = useDispatch()
 
   const verifiedTicket = async (codigoQR: string): Promise<void> => {
     try {
