@@ -2,27 +2,31 @@ import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { FaRegCalendarAlt } from "react-icons/fa"
 import { GiPositionMarker } from "react-icons/gi"
-import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
-import { RootState } from "../../store/"
 import Button from "../components/core/Button"
 import { Navbar } from "../components/UI/Navbar"
 import { formatDate } from "../utils/formatDate"
 import VerifiedSeller from "../views/VerifiedSeller"
 
+import { ticketStore } from "../../store_zustand/tickets"
+
 export default function BuyEntryPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const ticket = useSelector((state: RootState) => state.entry.ticketToResell)
+
+  const ticket = ticketStore((state) => state.selectedTicket)
+
   const [isChecked, setIsChecked] = useState(false)
   const [warningMessage, setWarningMessage] = useState("")
-
   const [isSameUser, setIsSameUser] = useState(false)
 
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("user") || "{}")
-    if (user?.id === ticket?.entrada.usuarioId) {
+    console.log(user)
+    console.log(ticket)
+
+    if (user?.id === ticket?.vendedorId) {
       setIsSameUser(true)
     }
   }, [])
@@ -66,7 +70,7 @@ export default function BuyEntryPage() {
           </span>
           <span className="flex gap-3">
             <FaRegCalendarAlt className="mr-1 text-3xl text-customLigthRed" />
-            <p>{formatDate(new Date(ticket?.entrada.eventDate))}</p>
+            {ticket && <p>{formatDate(new Date(ticket?.entrada.eventDate))}</p>}
           </span>
         </div>
         <h2 className="rounded-lg bg-customGreen p-1 px-2 text-[0.8rem] text-customWhite">
@@ -80,7 +84,7 @@ export default function BuyEntryPage() {
         </div>
         <hr className="my-2 w-[90%] border-t-4" />
 
-        <VerifiedSeller ticket={ticket} />
+        {ticket && <VerifiedSeller ticket={ticket} />}
         <div className="mt-4 flex w-auto items-start px-4">
           <input type="checkbox" className="req mt-1 h-5 w-5" checked={isChecked} onChange={handleCheckboxChange} />
           <p className="ml-2 w-[20rem]">

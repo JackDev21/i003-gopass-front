@@ -1,19 +1,17 @@
 import { SystemError } from "com/errors"
-import { useDispatch } from "react-redux"
 
 import useContext from "../context/UseContext"
 import { getProfile } from "../service/getProfile"
-import { setUserProfile } from "../store/user/userSlice"
+
+import { userStore } from "../store_zustand/users"
 
 export const useGetProfile = () => {
   const { alert } = useContext()
 
-  const dispatch = useDispatch()
-
   const getProfileData = async (): Promise<void> => {
     try {
-      const profile = await getProfile()
-      dispatch(setUserProfile(profile))
+      const profileData = await getProfile()
+      userStore.getState().setUserProfile(profileData)
     } catch (error: any) {
       if (error instanceof SystemError) {
         alert(error.message)

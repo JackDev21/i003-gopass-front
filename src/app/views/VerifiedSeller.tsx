@@ -6,15 +6,14 @@ import Avatar from "../components/UI/Avatar"
 import { useEffect } from "react"
 import { useGetSellerInfo } from "../../hooks/useGetSellerInfo"
 
-import { RootState } from "../../store"
-import { useSelector } from "react-redux"
-
-import { Ticket } from "../../store/entry/entrySlice"
+import { userStore } from "../../store_zustand/users"
+import { Ticket } from "../../types"
 
 export default function VerifiedSeller({ ticket }: { ticket: Ticket }) {
   const { t } = useTranslation()
   const { getUserSellerInfo } = useGetSellerInfo(ticket.vendedorId)
-  const user = useSelector((state: RootState) => state.user)
+
+  const user = userStore((state) => state.userSeller)
 
   useEffect(() => {
     getUserSellerInfo()

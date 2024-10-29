@@ -1,24 +1,23 @@
 import { useTranslation } from "react-i18next"
-import { useDispatch } from "react-redux"
+
 import { useNavigate } from "react-router-dom"
 
-import { setSelectedTicket, Ticket } from "../../../store/entry/entrySlice"
 import { formatDate } from "../../utils/formatDate"
 import Button from "../core/Button"
 
-interface CardProps {
-  ticket: Ticket
-}
+import { ticketStore } from "../../../store_zustand/tickets"
+import { Ticket } from "../../../types"
 
-export default function Card({ ticket }: CardProps) {
+export default function Card({ ticket }: { ticket: Ticket }): JSX.Element {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+
+  const setSelectedTicket = ticketStore((state) => state.setSelectedTicket)
 
   const formattedDate = formatDate(new Date(ticket.entrada.eventDate))
 
   const handleGoToBy = () => {
-    dispatch(setSelectedTicket(ticket))
+    setSelectedTicket(ticket)
     navigate(`/comprar-entrada`)
   }
 

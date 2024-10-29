@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 
 import { useGetTicketsForSell } from "../../hooks/useGetTicketsForSell"
-import { RootState } from "../../store"
-import Card from "../components/UI/Card"
 
+import Card from "../components/UI/Card"
 import { useTranslation } from "react-i18next"
+
+import { ticketStore } from "../../store_zustand/tickets"
 
 export default function LatestEntries(): JSX.Element {
   const { t } = useTranslation()
-  const tickets = useSelector((state: RootState) => state.entry.tickets)
+
+  const tickets = ticketStore((state) => state.tickets)
   const { getTicketsForSellData } = useGetTicketsForSell()
 
   const ticketsPerPage = tickets.length + 1

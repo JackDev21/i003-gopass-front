@@ -2,25 +2,29 @@ import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { IoIosArrowDropleft } from "react-icons/io"
 import { IoIosArrowDropright } from "react-icons/io"
-import { useDispatch, useSelector } from "react-redux"
+
 import { Link, useNavigate } from "react-router-dom"
 
 import notTicketsImage from "/img/soldout.png"
 import { useGetTicketsForSell } from "../../../hooks/useGetTicketsForSell"
-import { RootState } from "../../../store"
-import { setSelectedTicket, Ticket } from "../../../store/entry/entrySlice"
+
 import SearchBar from "./SearchBar"
+
+import { ticketStore } from "../../../store_zustand/tickets"
+import { Ticket } from "../../../types"
 
 type GridProps = {
   viewType: "landing" | "allTickets"
 }
 
 export default function Grid({ viewType }: GridProps) {
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { getTicketsForSellData } = useGetTicketsForSell()
-  const tickets = useSelector((state: RootState) => state.entry.tickets)
+
+  const tickets = ticketStore((state) => state.tickets)
+  const setSelectedTicket = ticketStore((state) => state.setSelectedTicket)
+
   const [currentPage, setCurrentPage] = useState(1)
   const ticketsPerPage = viewType === "allTickets" ? 10 : 6
   const [userVerifiedSms, setUserVerifiedSms] = useState(false)
@@ -56,7 +60,7 @@ export default function Grid({ viewType }: GridProps) {
 
   const handleTicketClick = (ticket: any) => {
     navigate(`/comprar-entrada/`)
-    dispatch(setSelectedTicket(ticket))
+    setSelectedTicket(ticket)
   }
 
   const handleSearch = (query: string) => {

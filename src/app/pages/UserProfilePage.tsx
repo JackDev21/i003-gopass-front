@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useSelector } from "react-redux"
 
 import { useGetProfile } from "../../hooks/useGetProfile"
 import { useUpdateProfile } from "../../hooks/useUpdateProfile"
 import { useVerifyPhone } from "../../hooks/useVerifyPhone"
-import { RootState } from "../../store"
+
 import Button from "../components/core/Button"
 import InputField from "../components/core/InputField"
 import Avatar from "../components/UI/Avatar"
 import { Navbar } from "../components/UI/Navbar"
+
+import { userStore } from "../../store_zustand/users"
 
 interface UpdateFormElements extends HTMLFormControlsCollection {
   nombre: HTMLInputElement
@@ -32,7 +33,8 @@ export default function UserProfile() {
   const { getProfileData } = useGetProfile()
   const { verifiedPhone } = useVerifyPhone()
 
-  const user = useSelector((state: RootState) => state.user.userProfile)
+  const user = userStore((state) => state.user)
+
   const [userData, setUserData] = useState({
     nombre: user.nombre || "",
     dni: user.dni || "",
@@ -41,7 +43,7 @@ export default function UserProfile() {
     city: user.city || "",
     country: user.country || "",
     email: user.email || "",
-    verificadoSms: user.verificadoSms || false
+    verificadoSms: user.verificadoSms || false,
   })
 
   useEffect(() => {
@@ -57,7 +59,7 @@ export default function UserProfile() {
       city: user.city || "",
       country: user.country || "",
       email: user.email || "",
-      verificadoSms: user.verificadoSms || false
+      verificadoSms: user.verificadoSms || false,
     })
   }, [user])
 
@@ -76,12 +78,12 @@ export default function UserProfile() {
 
     await updatedProfile(nombre, dni, numeroTelefono, image, city, country)
   }
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
     setUserData((prevUser) => ({
       ...prevUser,
-      [id]: value
+      [id]: value,
     }))
   }
 
