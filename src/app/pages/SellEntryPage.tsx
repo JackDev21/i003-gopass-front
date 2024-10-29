@@ -34,6 +34,8 @@ export default function SellEntryPage() {
   const codigoQR = ticketStore.getState().ticketToResell?.codigoQR || ""
   const entry = ticketStore.getState().ticketToResell
 
+  console.log("entry", entry)
+
   const handleVerifySubmitTicket = async (event: React.FormEvent<ValidateFormElement>) => {
     event.preventDefault()
     const form = event.currentTarget

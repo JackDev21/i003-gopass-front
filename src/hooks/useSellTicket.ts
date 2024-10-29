@@ -9,15 +9,7 @@ export const useSellTicket = () => {
 
   const { alert } = useContext()
 
-  const sellTicketPost = async (
-    codigoQR: string,
-    gameName: string,
-    eventDate: Date,
-    address: string,
-    description: string,
-    resaleDetail: string,
-    precio: number
-  ): Promise<void> => {
+  const sellTicketPost = async (codigoQR: string,gameName: string,eventDate: Date,address: string,description: string,resaleDetail: string,precio: number): Promise<void> => {
     try {
       await sellTicket(codigoQR, gameName, eventDate, address, description, resaleDetail, precio)
       navigate("/")

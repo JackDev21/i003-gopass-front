@@ -15,7 +15,7 @@ export const userVerifyTicket = () => {
   const verifiedTicket = async (codigoQR: string): Promise<void> => {
     try {
       const ticketData = await verifyTicket(codigoQR)
-      ticketStore.getState().setValidateTicket(ticketData)
+      ticketStore.getState().setTicketToResell(ticketData)
     } catch (error: any) {
       if (error instanceof SystemError) {
         alert(error.message)
