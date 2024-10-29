@@ -1,15 +1,14 @@
 import { useTranslation } from "react-i18next"
-import { useSelector } from "react-redux"
-import { useDispatch } from "react-redux"
 
 import { useSellTicket } from "../../hooks/useSellTicket"
 import { userVerifyTicket } from "../../hooks/useVerifyTicket"
-import { RootState } from "../../store"
-import { clearEntry } from "../../store/entry/entrySlice"
+
 import Button from "../components/core/Button"
 import InputField from "../components/core/InputField"
 import TextArea from "../components/core/TextArea"
 import { Navbar } from "../components/UI/Navbar"
+
+import { ticketStore } from "../../store_zustand/tickets"
 
 interface ValidateFormElements extends HTMLFormControlsCollection {
   eventName: any
@@ -28,18 +27,19 @@ interface ValidateFormElement extends HTMLFormElement {
 
 export default function SellEntryPage() {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+
   const { verifiedTicket } = userVerifyTicket()
   const { sellTicketPost } = useSellTicket()
-  const codigoQR = useSelector((state: RootState) => state.entry.ticketToResell?.codigoQR)
-  const entry = useSelector((state: RootState) => state.entry.ticketToResell)
+
+  const codigoQR = ticketStore.getState().ticketToResell?.codigoQR || ""
+  const entry = ticketStore.getState().ticketToResell
 
   const handleVerifySubmitTicket = async (event: React.FormEvent<ValidateFormElement>) => {
     event.preventDefault()
     const form = event.currentTarget
     const target = form.elements
 
-    const codigoQR: string = target.codigoQR.value
+    const codigoQR = target.codigoQR.value
 
     await verifiedTicket(codigoQR)
   }
@@ -57,7 +57,6 @@ export default function SellEntryPage() {
     const price = target.price.value
 
     await sellTicketPost(codigoQR, eventName, eventDate, address, details, message, price)
-    dispatch(clearEntry())
   }
 
   return (
@@ -124,7 +123,7 @@ export default function SellEntryPage() {
                       hour: "2-digit",
                       minute: "2-digit",
                       hour12: false,
-                      timeZone: "America/Argentina/Buenos_Aires"
+                      timeZone: "America/Argentina/Buenos_Aires",
                     })
                   : ""
               }

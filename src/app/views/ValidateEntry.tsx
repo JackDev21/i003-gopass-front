@@ -21,22 +21,18 @@ function ValidateEntry({ onValidate }: { onValidate: (isValid: boolean) => void 
     const form = event.currentTarget
     const target = form.elements
 
-    const codigoQR: string = target.codigoQR.value
+    const codigoQR = target.codigoQR.value
 
     // Asume que `verified` retorna un booleano que indica si es válido o no
     const isValid = await verified(codigoQR)
-    // Llamamos a `onValidate` con `isValid` como argumento
     onValidate(isValid)
-
-    form.reset()
   }
 
   return (
     <>
       <section className="flex w-full flex-col items-center p-4">
-        <div className="items-star m-4 flex flex-col">
-          <h2 className="mt-20 pt-7 text-xl font-semibold">{t("enterCode")}</h2>
-          <div className="text flex flex-col gap-3 pt-6 text-xl"></div>
+        <div className="m-4 flex justify-center text-center">
+          <h2 className="mt-20 pt-7 text-xl font-semibold">{t("verifyAuthenticityEntry")}</h2>
         </div>
       </section>
       <form className="flex flex-col items-center text-center" onSubmit={handleSubmit}>

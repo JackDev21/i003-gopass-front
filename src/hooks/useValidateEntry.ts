@@ -1,16 +1,12 @@
-import { useDispatch } from "react-redux"
-
 import { validateEntry } from "../service/validateEntry"
-import { setEntry } from "../store/entry/entrySlice"
+
+import { ticketStore } from "../store_zustand/tickets"
 
 export const useValidateEntry = () => {
-  const dispatch = useDispatch()
-
   const verified = async (codigoQR: string): Promise<boolean> => {
     try {
-      const entryData = await validateEntry(codigoQR)
-      dispatch(setEntry(entryData))
-
+      const ticketData = await validateEntry(codigoQR)
+      ticketStore.setState({ validateTicket: ticketData })
       return true
     } catch {
       return false

@@ -23,9 +23,6 @@ export default function BuyEntryPage() {
 
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("user") || "{}")
-    console.log(user)
-    console.log(ticket)
-
     if (user?.id === ticket?.vendedorId) {
       setIsSameUser(true)
     }

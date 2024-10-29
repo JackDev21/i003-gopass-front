@@ -1,11 +1,8 @@
-import { Ticket } from "../../../store/entry/entrySlice"
+import { Ticket } from "../../../types"
 import { formatDate } from "../../utils/formatDate"
 
-interface CardMyTicketsProps {
-  ticket: Ticket
-}
 
-export const MyTicketsCardSold: React.FC<CardMyTicketsProps> = ({ ticket }) => {
+export const MyTicketsCardSold: React.FC<{ ticket: Ticket }> = ({ ticket }) => {
   const formattedDate = formatDate(new Date(ticket.eventDate))
 
   return (

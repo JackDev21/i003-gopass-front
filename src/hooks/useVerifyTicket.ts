@@ -1,19 +1,21 @@
 import { SystemError } from "com/errors"
-import { useDispatch } from "react-redux"
+// import { useDispatch } from "react-redux"
 
 import useContext from "../context/UseContext"
 import { verifyTicket } from "../service/verifyTicket"
-import { setEntry } from "../store/entry/entrySlice"
+// import { setEntry } from "../store/entry/entrySlice"
+
+import { ticketStore } from "../store_zustand/tickets"
 
 export const userVerifyTicket = () => {
   const { alert } = useContext()
 
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
   const verifiedTicket = async (codigoQR: string): Promise<void> => {
     try {
-      const entryData = await verifyTicket(codigoQR)
-      dispatch(setEntry(entryData))
+      const ticketData = await verifyTicket(codigoQR)
+      ticketStore.getState().setValidateTicket(ticketData)
     } catch (error: any) {
       if (error instanceof SystemError) {
         alert(error.message)

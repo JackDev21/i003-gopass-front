@@ -1,15 +1,16 @@
 import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import { useSelector } from "react-redux"
 
 import { useGetUserTickets } from "../../hooks/useGetUserTickets"
-import { RootState } from "../../store"
-import { Ticket } from "../../store/entry/entrySlice"
+
 import { MyTicketsCard } from "../components/UI/MyTicketsCard"
 import { Navbar } from "../components/UI/Navbar"
 
+import { ticketStore } from "../../store_zustand/tickets"
+import { Ticket } from "../../types"
+
 export const MyTickets: React.FC = () => {
-  const tickets = useSelector((state: RootState) => state.entry.purchasedTickets)
+  const tickets = ticketStore((state) => state.purchasedTickets)
   const { t } = useTranslation()
 
   const { getUserTicketsData } = useGetUserTickets()
